@@ -1,0 +1,2 @@
+time,x,y,z,yaw,platform,controller,trajectory,traj_double,lookahead_time,traj_time,comp_time,vx,vy,vz,x_ref,y_ref,z_ref,yaw_ref,vx_ref,vy_ref,vz_ref,p,q,r,throttle_input,p_input,q_input,r_input
+nan,nan,nan,nan,nan,HW,ff_f8,F8_CONTRACTION,NormSpd,0.0,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan

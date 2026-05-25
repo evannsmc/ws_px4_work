@@ -1,0 +1,2 @@
+Trajectory,JAX mean [µs],C++ mean [µs],Speed-up (JAX/C++),JAX 1/mean [kHz],C++ 1/mean [kHz]
+Circle Horz 2x,293.1089305558228,45.35995317725752,6.461843763603819,3.4117008925783976,22.045878135989305

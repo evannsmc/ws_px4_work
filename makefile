@@ -8,7 +8,7 @@
 # the workspace root (ws_px4_work/) as the build context.  It contains:
 #
 #   • ROS 2 Jazzy          — from osrf/ros:jazzy-desktop-full base image
-#   • px4_msgs             — cloned from github.com/evannsm/px4_msgs
+#   • px4_msgs             — cloned from github.com/evannsmc/px4_msgs
 #                            (branch: v1.16_minimal_msgs) and pre-built into
 #                            /opt/ws_px4_msgs/install/ so it is always
 #                            available as an upstream ROS 2 overlay
