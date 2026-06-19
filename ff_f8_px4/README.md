@@ -1,23 +1,60 @@
-# ff_f8_px4
+# Feedforward Figure-8 Controller for PX4-ROS2
 
-ROS 2 package for the `f8_contraction` trajectory that publishes body-rate and thrust
-commands derived from differential-flatness feedforward. The package now supports
-three layers that can be combined:
+![Status](https://img.shields.io/badge/Status-Hardware_Validated-blue)
+[![ROS 2 Compatible](https://img.shields.io/badge/ROS%202-Humble-blue)](https://docs.ros.org/en/humble/index.html)
+[![PX4 Compatible](https://img.shields.io/badge/PX4-Autopilot-pink)](https://github.com/PX4/PX4-Autopilot)
+![Control](https://img.shields.io/badge/Control-Feedforward_(flatness)-brightgreen)
 
-- flatness feedforward for the nominal `f8_contraction` motion
-- an optional startup ramp so the controller does not jump instantly from hover to the moving trajectory
-- an optional light feedback layer (`--p-feedback`) that adds position, velocity, attitude, and body-rate damping
+A ROS 2 controller for the `fig8_akash` trajectory that publishes body-rate and thrust commands derived purely from **differential-flatness feedforward**. It is the open-loop baseline of the [evannsmc PX4-ROS2 control stack](https://www.evannsmc.com/projects): it inverts the flat output of the figure-8 directly into `[throttle, p, q, r]`, with no feedback from odometry by default.
+
+Three layers can be combined:
+
+- **flatness feedforward** for the nominal `fig8_akash` motion (always on),
+- an optional **startup ramp** (`--ramp-seconds`) so the controller does not jump instantly from hover to the moving trajectory,
+- an optional **light feedback layer** (`--p-feedback`) that adds position, velocity, attitude, and body-rate damping.
+
+<div align="center">
+
+---
+
+**[<kbd> <br> Build <br> </kbd>](#build)** 
+**[<kbd> <br> Approach <br> </kbd>](#how-it-works)** 
+**[<kbd> <br> Modes <br> </kbd>](#modes)** 
+**[<kbd> <br> Usage <br> </kbd>](#usage)** 
+**[<kbd> <br> Arguments <br> </kbd>](#arguments)** 
+**[<kbd> <br> Logs <br> </kbd>](#log-filenames)** 
+
+---
+
+</div>
+
+<details open>
+<summary><b>📖 Table of Contents</b></summary>
+
+- [Modes](#modes)
+- [How It Works](#how-it-works)
+- [Build](#build)
+- [Usage](#usage)
+  - [Command Matrix](#command-matrix)
+- [Arguments](#arguments)
+- [Practical Guidance](#practical-guidance)
+- [Log Filenames](#log-filenames)
+- [Dependencies](#dependencies)
+- [Package Structure](#package-structure)
+- [Technical Note](#technical-note)
+- [License](#license)
+
+</details>
 
 ## Modes
 
-- Default: pure open-loop feedforward
-- `--p-feedback`: feedforward plus light proportional position / attitude correction
-- `--ramp-seconds`: startup blend from hover commands into feedforward (default `2.0`)
+- **Default** — pure open-loop feedforward
+- **`--p-feedback`** — feedforward plus light proportional position / attitude correction
+- **`--ramp-seconds`** — startup blend from hover commands into feedforward (default `2.0`)
 
 ## How It Works
 
-At each control tick the node evaluates the `f8_contraction` flat output and runs
-`flat_to_x_u(...)` from `quad_trajectories`. That returns:
+At each control tick the node evaluates the `fig8_akash` flat output and runs `flat_to_x_u(...)` from `quad_trajectories`. That returns:
 
 - `x_ff = [px, py, pz, vx, vy, vz, f_specific, phi, th, psi]`
 - `u_ff = [df, dphi, dth, dpsi]`
@@ -41,8 +78,7 @@ When `--ramp-seconds > 0`, the controller also does two startup-smoothing steps:
 - it time-warps the trajectory at the start so reference speed rises gradually
 - it blends commanded inputs from hover `[hover thrust, 0, 0, 0]` into the feedforward command
 
-This is important because the vehicle begins from hover, while the figure-8 reference
-implies nonzero velocity and nonzero angular-rate demand almost immediately.
+This is important because the vehicle begins from hover, while the figure-8 reference implies nonzero velocity and nonzero angular-rate demand almost immediately.
 
 ## Build
 
@@ -52,7 +88,7 @@ colcon build --packages-select quad_platforms quad_trajectories ff_f8_px4
 source install/setup.bash
 ```
 
-## Example Commands
+## Usage
 
 ```bash
 # Pure feedforward, default ramp
@@ -67,9 +103,6 @@ ros2 run ff_f8_px4 run_node --platform sim --p-feedback --log
 # Feedforward with light proportional feedback, longer ramp
 ros2 run ff_f8_px4 run_node --platform sim --p-feedback --ramp-seconds 4.0 --log
 
-# Feedforward with light proportional feedback, no ramp
-ros2 run ff_f8_px4 run_node --platform sim --p-feedback --ramp-seconds 0 --log
-
 # Double speed variants
 ros2 run ff_f8_px4 run_node --platform sim --double-speed --log
 ros2 run ff_f8_px4 run_node --platform sim --double-speed --p-feedback --log
@@ -78,9 +111,9 @@ ros2 run ff_f8_px4 run_node --platform sim --double-speed --p-feedback --log
 ros2 run ff_f8_px4 run_node --platform hw --p-feedback --log
 ```
 
-## Command Matrix
+### Command Matrix
 
-### Simulation
+**Simulation**
 
 ```bash
 # 1x, pure ff
@@ -104,7 +137,7 @@ ros2 run ff_f8_px4 run_node --platform sim --double-speed --p-feedback --ramp-se
 ros2 run ff_f8_px4 run_node --platform sim --double-speed --p-feedback --ramp-seconds 0 --log
 ```
 
-### Hardware
+**Hardware**
 
 ```bash
 # 1x, pure ff
@@ -142,10 +175,10 @@ ros2 run ff_f8_px4 run_node --platform hw --double-speed --p-feedback --ramp-sec
 
 ## Practical Guidance
 
-- `pure ff` is mainly useful as a baseline comparison and is sensitive to mismatch.
+- `pure ff` is mainly useful as a baseline comparison and is sensitive to model mismatch.
 - `--p-feedback` is the recommended mode if you want the controller to actually track the trajectory reasonably.
 - increasing `--ramp-seconds` reduces the startup discontinuity when switching from hover to figure-8 flight.
-- the hover / return position is the actual first `f8_contraction` reference point, not a generic hardcoded hover point.
+- the hover / return position is the actual first `fig8_akash` reference point, not a generic hardcoded hover point.
 - logs are saved under `src/data_analysis/log_files/ff_f8_px4/`.
 
 ## Log Filenames
@@ -160,9 +193,34 @@ Examples:
 - `sim_ff_f8_pfb_ramp2p0s_1x.csv`
 - `hw_ff_f8_pfb_ramp2p0s_2x.csv`
 
+## Dependencies
+
+- [quad_trajectories](https://github.com/evannsmc/quad_trajectories) — provides `fig8_akash` and `flat_to_x_u`
+- [quad_platforms](https://github.com/evannsmc/quad_platforms) — mass and thrust-throttle conversion
+- [ros2_logger](https://github.com/evannsmc/ROS2Logger) — CSV experiment logging
+- [px4_msgs](https://github.com/evannsmc/px4_msgs/tree/v1.16_minimal_msgs) — PX4 ROS 2 message definitions
+- JAX — flat-output differentiation
+
+## Package Structure
+
+```
+ff_f8_px4/
+├── ff_f8_px4/
+│   ├── run_node.py        # CLI entry point and argument parsing
+│   └── ros2px4_node.py    # ROS 2 node (feedforward control loop, ramp, optional feedback)
+├── docs/
+│   └── ff_f8_controller.qmd   # detailed derivation (rendered to PDF)
+├── package.xml
+└── setup.py
+```
+
 ## Technical Note
 
 A more detailed derivation is available in:
 
 - `docs/ff_f8_controller.qmd`
 - rendered PDF: `docs/ff_f8_controller.pdf`
+
+## License
+
+MIT
