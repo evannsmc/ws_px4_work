@@ -1,0 +1,7 @@
+# Claude Code project state — repo is source of truth for memory only.
+# Conversation transcripts are ephemeral and machine-local; never commit them.
+*.jsonl
+conversations/
+
+# Keep memory/ tracked (do NOT ignore it).
+!memory/

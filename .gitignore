@@ -16,7 +16,11 @@ venv/
 
 # Editor / IDE
 .vscode/
-.claude/
+
+# Claude Code project state — keep memory/ (repo is source of truth), ignore transcripts/cache
+.claude/*
+!.claude/memory/
+!.claude/.gitignore
 
 # OS
 .DS_Store
