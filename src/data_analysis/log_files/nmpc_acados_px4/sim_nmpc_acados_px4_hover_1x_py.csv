@@ -1,0 +1,2 @@
+time,x,y,z,yaw,platform,controller,trajectory,traj_double,traj_short,traj_spin,lookahead_time,traj_time,ref_time,comp_time,x_ref,y_ref,z_ref,yaw_ref,throttle_input,p_input,q_input,r_input,cbf_term_pitch_cbf,cbf_term_roll_cbf,cbf_term_thrust_cbf,cbf_term_yaw_cbf
+10.095458984375,nan,nan,nan,nan,SIM,NMPC,HOVER,NormSpd,Not Short,NoSpin,0.0,0.0,0.0,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan
