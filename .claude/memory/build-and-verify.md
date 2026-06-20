@@ -1,19 +1,24 @@
 ---
 name: build-and-verify
-description: How to build/verify the ws_px4_work stack; zsh aliases; what's missing on the current (post-machine-switch) machine
+description: How to build/verify the ws_px4_work stack — Docker is the real build path; zsh aliases; host gaps
 metadata:
   type: reference
 ---
 
-**zsh aliases** (in `~/.zshrc`) for working with the stack:
-- `jazz` → `source /opt/ros/jazzy/setup.zsh` (ROS 2 **Jazzy**)
-- `cap` → `source /home/egmc/ws_mocap_px4_msgs_drivers/install/setup.zsh` (mocap workspace overlay → provides `px4_msgs`)
-- `cb` / `cbp` → `colcon build` variants; `juggle` → plotjuggler; `vicon`/`relay`/`full` → mocap launches.
+**Canonical build path = Docker.** A prebuilt image **`px4_controllers_jazzy:latest`** ships ROS 2 Jazzy + colcon + JAX + acados_template + a prebuilt `px4_msgs` overlay (`/opt/ws_px4_msgs/install`). A `bash -lc` login shell in it auto-sources ROS + px4_msgs. Verified recipe (packages live under `src/` — see [[px4-stack-git-workflow]]):
 
-**ROS distro is Jazzy, but the README badges say "ROS 2 Humble"** — likely a stale badge across the stack. Confirm intended target with the user before mass-editing.
+```
+docker run --rm -v /home/egmc/ws_px4_work:/workspace px4_controllers_jazzy:latest bash -lc \
+  'cd /workspace && colcon build --symlink-install --packages-up-to <pkg> --cmake-args -DCMAKE_BUILD_TYPE=Release'
+```
 
-**Current machine is a partial setup** (post "machine switch" — see git history). As of 2026-06 it was MISSING: `jax`, `acados_template` (so Python controllers can't build/import), the `ws_mocap_px4_msgs_drivers` workspace entirely (so `cap` / px4_msgs overlay unavailable), and `/opt/ros/jazzy` is minimal (`ros2 pkg` not present). A full `colcon` build of the controllers must be done on the real dev machine. `px4_msgs` source exists at `/home/egmc/MoralesCuadrado_Baird_TCST2026/src/px4_msgs`.
+- **Image-name mismatch:** the `src/makefile` uses `IMAGE_NAME=px4_ros2_jazzy`, but the actual prebuilt image is `px4_controllers_jazzy`. So `make run` as-is won't find it — drive `docker run` directly (above) or retag/fix the makefile.
+- **Root-owned artifacts gotcha:** the container runs as root, so `build/ install/ log/` it writes to the mounted host dir are **root-owned** → can't `rm` without sudo. Clean them from a container instead: `docker run --rm -v <ws>:/workspace px4_controllers_jazzy:latest rm -rf /workspace/build /workspace/install /workspace/log`.
+- **acados C++ controller** (`nmpc_acados_px4_cpp`) needs its solver C-code generated first: `cd /workspace && python3 src/nmpc_acados_px4/ensure_solver.py --platform sim` (CMake errors otherwise). This is a standing prereq, unrelated to source edits.
+- Build results (2026-06, fig8_akash rename verification): all Python pkgs + `quad_trajectories_cpp` + `newton_raphson_px4_cpp` + `geometric_px4_cpp` compiled clean in-container.
 
-**Lightweight verification that DOES work here** (used to verify the [[px4-stack-git-workflow]] fig8_akash rename):
-- C++: `g++ -std=c++17 -I quad_trajectories_cpp/include -I /usr/include/eigen3 test.cpp` — `types.hpp` is standalone; `trajectories.hpp` needs only Eigen (autodiff only for the `<autodiff::real>` instantiations in registry.cpp/utils.cpp, which FetchContent autodiff from GitHub at configure time → needs network).
-- Python: load a jax-free module standalone via `importlib.util.spec_from_file_location` (e.g. `types.py`) to bypass `__init__.py` (which pulls jax). `py_compile` works for syntax.
+**zsh aliases** (`~/.zshrc`): `jazz`=`source /opt/ros/jazzy/setup.zsh`; `cap`=`source /home/egmc/ws_mocap_px4_msgs_drivers/install/setup.zsh` (mocap overlay → px4_msgs); `cb`/`cbp`=colcon build variants; `juggle`/`vicon`/`relay`/`full`=mocap launches. NOTE: zsh does NOT word-split unquoted `$VARS` — list items inline in `for` loops or use `${=VAR}`.
+
+**Host (outside Docker) is a partial post-machine-switch setup:** missing `jax`, `acados_template`, the `ws_mocap_px4_msgs_drivers` workspace (so `cap` fails), and `/opt/ros/jazzy` is minimal. So build ON HOST is not viable — use Docker. `px4_msgs` source also exists at `/home/egmc/MoralesCuadrado_Baird_TCST2026/src/px4_msgs`.
+
+**ROS badges:** READMEs now carry a **dual `ROS 2 Humble | Jazzy`** badge (machine runs Jazzy; stack historically Humble) per user decision.
