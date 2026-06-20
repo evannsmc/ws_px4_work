@@ -5,11 +5,11 @@
 [![PX4 Compatible](https://img.shields.io/badge/PX4-Autopilot-pink)](https://github.com/PX4/PX4-Autopilot)
 ![Control](https://img.shields.io/badge/Control-Feedforward_(flatness)-brightgreen)
 
-A ROS 2 controller for the `fig8_akash` trajectory that publishes body-rate and thrust commands derived purely from **differential-flatness feedforward**. It is the open-loop baseline of the [evannsmc PX4-ROS2 control stack](https://www.evannsmc.com/projects): it inverts the flat output of the figure-8 directly into `[throttle, p, q, r]`, with no feedback from odometry by default.
+A ROS 2 controller for the `fig8_contraction` trajectory that publishes body-rate and thrust commands derived purely from **differential-flatness feedforward**. It is the open-loop baseline of the [evannsmc PX4-ROS2 control stack](https://www.evannsmc.com/projects): it inverts the flat output of the figure-8 directly into `[throttle, p, q, r]`, with no feedback from odometry by default.
 
 Three layers can be combined:
 
-- **flatness feedforward** for the nominal `fig8_akash` motion (always on),
+- **flatness feedforward** for the nominal `fig8_contraction` motion (always on),
 - an optional **startup ramp** (`--ramp-seconds`) so the controller does not jump instantly from hover to the moving trajectory,
 - an optional **light feedback layer** (`--p-feedback`) that adds position, velocity, attitude, and body-rate damping.
 
@@ -54,7 +54,7 @@ Three layers can be combined:
 
 ## How It Works
 
-At each control tick the node evaluates the `fig8_akash` flat output and runs `flat_to_x_u(...)` from `quad_trajectories`. That returns:
+At each control tick the node evaluates the `fig8_contraction` flat output and runs `flat_to_x_u(...)` from `quad_trajectories`. That returns:
 
 - `x_ff = [px, py, pz, vx, vy, vz, f_specific, phi, th, psi]`
 - `u_ff = [df, dphi, dth, dpsi]`
@@ -178,7 +178,7 @@ ros2 run ff_f8_px4 run_node --platform hw --double-speed --p-feedback --ramp-sec
 - `pure ff` is mainly useful as a baseline comparison and is sensitive to model mismatch.
 - `--p-feedback` is the recommended mode if you want the controller to actually track the trajectory reasonably.
 - increasing `--ramp-seconds` reduces the startup discontinuity when switching from hover to figure-8 flight.
-- the hover / return position is the actual first `fig8_akash` reference point, not a generic hardcoded hover point.
+- the hover / return position is the actual first `fig8_contraction` reference point, not a generic hardcoded hover point.
 - logs are saved under `src/data_analysis/log_files/ff_f8_px4/`.
 
 ## Log Filenames
@@ -195,7 +195,7 @@ Examples:
 
 ## Dependencies
 
-- [quad_trajectories](https://github.com/evannsmc/quad_trajectories) — provides `fig8_akash` and `flat_to_x_u`
+- [quad_trajectories](https://github.com/evannsmc/quad_trajectories) — provides `fig8_contraction` and `flat_to_x_u`
 - [quad_platforms](https://github.com/evannsmc/quad_platforms) — mass and thrust-throttle conversion
 - [ros2_logger](https://github.com/evannsmc/ROS2Logger) — CSV experiment logging
 - [px4_msgs](https://github.com/evannsmc/px4_msgs/tree/v1.16_minimal_msgs) — PX4 ROS 2 message definitions

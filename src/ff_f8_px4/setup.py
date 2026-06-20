@@ -15,7 +15,7 @@ setup(
     zip_safe=True,
     maintainer='egmc',
     maintainer_email='egmc@todo.todo',
-    description='Pure feedforward controller for the fig8_akash trajectory',
+    description='Pure feedforward controller for the fig8_contraction trajectory',
     license='MIT',
     tests_require=['pytest'],
     entry_points={

@@ -1,4 +1,4 @@
-"""Entry point for the fig8_akash feedforward ROS 2 node."""
+"""Entry point for the fig8_contraction feedforward ROS 2 node."""
 
 import rclpy
 import traceback
@@ -14,7 +14,7 @@ from quad_platforms import PlatformType
 
 def create_parser():
     parser = argparse.ArgumentParser(
-        description="Feedforward-based controller for the fig8_akash trajectory",
+        description="Feedforward-based controller for the fig8_contraction trajectory",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
         """ + "==" * 60 + """
@@ -166,9 +166,9 @@ def main():
     print("\n" + "=" * 60)
     print("Feedforward Control Configuration")
     print("=" * 60)
-    print("Controller:    Pure feedforward (fig8_akash, flat-output inversion)")
+    print("Controller:    Pure feedforward (fig8_contraction, flat-output inversion)")
     print(f"Platform:      {platform.value.upper()}")
-    print(f"Trajectory:    FIG8_AKASH")
+    print(f"Trajectory:    FIG8_CONTRACTION")
     print(f"P Feedback:    {'Enabled' if p_feedback else 'Disabled'}")
     print(f"Ramp:          {ramp_seconds:.2f} s")
     print(f"Speed:         {'Double (2x)' if double_speed else 'Regular (1x)'}")

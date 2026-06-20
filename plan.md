@@ -98,6 +98,14 @@ Two tasks: (A) extend README treatment to ALL remaining packages; (B) rename `fi
 - **Restructure into `src/`** (user request): `git mv` all 17 submodules + data_analysis/docker/ff_f8_px4/offboard_cpp/makefile → `src/`. Root keeps README.md, plan.md, .claude, .vscode, .gitmodules. This matches the makefile (`WS_ROOT=..`), the acados solver path, the data_analysis log path, and the READMEs' documented layout.
 - Cleaned build/install/log (root-owned → removed via container).
 
+# Phase 4 (new requests)
+- **nmpc_acados_px4_cpp self-generates its acados solver** at build time: CMake runs `ensure_solver.py` (stamp-cached) instead of erroring; added `nmpc_acados_px4`/`quad_platforms` deps so colcon builds Python first. VERIFIED in Docker — clean build generated the solver from scratch and linked (COLCON EXIT=0).
+- makefile: `IMAGE_NAME` px4_ros2_jazzy -> **px4_controllers_jazzy** (matches real image); added `generate_nmpc_solver` target.
+- Stale links fixed: NR README `NMPC_PX4` -> nmpc_acados_px4; nmpc README `NRFlow_PX4_PKG` -> newton_raphson_px4.
+- Reverted rename: fig8_akash -> **fig8_contraction** (unified Python+C++), per user.
+- READMEs rewritten for an external reader: contraction-controller refs in the TRAJECTORY repos reframed as "written for my [contraction controller](https://github.com/evannsmc/contraction_controller_px4)"; in CONTROLLER repos the insider mention was dropped (describe the differential-flatness feedforward plainly).
+- Verified the fig8_contraction rename builds (nmpc_cpp + nr_cpp + deps, COLCON EXIT=0).
+
 ## Notes
 - ROS Jazzy on this machine; badges now dual Humble|Jazzy per user.
 - (changes/eliminations recorded here as the plan evolves)

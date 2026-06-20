@@ -4,7 +4,7 @@
 #
 # HOW THE DOCKER IMAGE IS BUILT
 # ──────────────────────────────
-# The image (px4_ros2_jazzy) is built from src/docker/Dockerfile with
+# The image (px4_controllers_jazzy) is built from src/docker/Dockerfile with
 # the workspace root (ws_px4_work/) as the build context.  It contains:
 #
 #   • ROS 2 Jazzy          — from osrf/ros:jazzy-desktop-full base image
@@ -39,8 +39,8 @@
 #   make build_ros      # build all packages in the workspace
 # =============================================================================
 
-IMAGE_NAME     = px4_ros2_jazzy
-CONTAINER_NAME = px4_ros2
+IMAGE_NAME     = px4_controllers_jazzy
+CONTAINER_NAME = px4_controllers
 # src/ is CWD; ws_px4_work/ is one level up
 WS_ROOT        := $(abspath ..)
 
@@ -96,4 +96,12 @@ ros2_run:
 	docker exec -it $(CONTAINER_NAME) bash -lc \
 		"ros2 run $(PKG) $(EXEC) $(ARGS)"
 
-.PHONY: build run stop kill attach build_ros clean_build_ros ros2_run
+# ── Generate the acados NMPC solver ───────────────────────────────────────────
+# Usually unnecessary: nmpc_acados_px4_cpp auto-generates its solver during
+# build_ros. Use this to (re)generate for a specific platform, e.g. PLATFORM=hw.
+PLATFORM ?= sim
+generate_nmpc_solver:
+	docker exec -it $(CONTAINER_NAME) bash -lc \
+		"cd /workspace && python3 src/nmpc_acados_px4/ensure_solver.py --platform $(PLATFORM)"
+
+.PHONY: build run stop kill attach build_ros clean_build_ros ros2_run generate_nmpc_solver
