@@ -1,51 +1,51 @@
 [submodule "newton_raphson_px4"]
-	path = newton_raphson_px4
+	path = src/newton_raphson_px4
 	url = git@github.com:evannsmc/newton_raphson_px4.git
 [submodule "nmpc_acados_px4"]
-	path = nmpc_acados_px4
+	path = src/nmpc_acados_px4
 	url = git@github.com:evannsmc/nmpc_acados_px4.git
 [submodule "ros2_logger_cpp"]
-	path = ros2_logger_cpp
+	path = src/ros2_logger_cpp
 	url = git@github.com:evannsmc/ROS2Logger_cpp.git
 [submodule "quad_trajectories_cpp"]
-	path = quad_trajectories_cpp
+	path = src/quad_trajectories_cpp
 	url = git@github.com:evannsmc/quad_trajectories_cpp.git
 [submodule "px4_ros_com"]
-	path = px4_ros_com
+	path = src/px4_ros_com
 	url = git@github.com:PX4/px4_ros_com.git
 [submodule "newton_raphson_px4_cpp"]
-	path = newton_raphson_px4_cpp
+	path = src/newton_raphson_px4_cpp
 	url = git@github.com:evannsmc/newton_raphson_px4_cpp.git
 [submodule "quad_platforms_cpp"]
-	path = quad_platforms_cpp
+	path = src/quad_platforms_cpp
 	url = git@github.com:evannsmc/quad_platforms_cpp.git
 [submodule "ros2_logger"]
-	path = ros2_logger
+	path = src/ros2_logger
 	url = git@github.com:evannsmc/ROS2Logger.git
 [submodule "geometric_px4_quat"]
-	path = geometric_px4_quat
+	path = src/geometric_px4_quat
 	url = git@github.com:evannsmc/geometric_px4_quat.git
 [submodule "quad_trajectories"]
-	path = quad_trajectories
+	path = src/quad_trajectories
 	url = git@github.com:evannsmc/quad_trajectories.git
 [submodule "geometric_px4_flip"]
-	path = geometric_px4_flip
+	path = src/geometric_px4_flip
 	url = git@github.com:evannsmc/geometric_px4_flip.git
 [submodule "geometric_px4"]
-	path = geometric_px4
+	path = src/geometric_px4
 	url = git@github.com:evannsmc/geometric_px4.git
 [submodule "geometric_px4_cpp"]
-	path = geometric_px4_cpp
+	path = src/geometric_px4_cpp
 	url = git@github.com:evannsmc/geometric_px4_cpp.git
 [submodule "geometric_px4_flat"]
-	path = geometric_px4_flat
+	path = src/geometric_px4_flat
 	url = git@github.com:evannsmc/geometric_px4_flat.git
 [submodule "quad_platforms"]
-	path = quad_platforms
+	path = src/quad_platforms
 	url = git@github.com:evannsmc/quad_platforms.git
 [submodule "testing_jacobian"]
-	path = testing_jacobian
+	path = src/testing_jacobian
 	url = git@github.com:evannsmc/jax_cpp_nr_speed_test.git
 [submodule "nmpc_acados_px4_cpp"]
-	path = nmpc_acados_px4_cpp
+	path = src/nmpc_acados_px4_cpp
 	url = git@github.com:evannsmc/nmpc_acados_px4_cpp.git

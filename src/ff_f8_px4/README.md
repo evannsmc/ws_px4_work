@@ -1,7 +1,7 @@
 # Feedforward Figure-8 Controller for PX4-ROS2
 
 ![Status](https://img.shields.io/badge/Status-Hardware_Validated-blue)
-[![ROS 2 Compatible](https://img.shields.io/badge/ROS%202-Humble-blue)](https://docs.ros.org/en/humble/index.html)
+[![ROS 2 Compatible](https://img.shields.io/badge/ROS%202-Humble_%7C_Jazzy-blue)](https://docs.ros.org/)
 [![PX4 Compatible](https://img.shields.io/badge/PX4-Autopilot-pink)](https://github.com/PX4/PX4-Autopilot)
 ![Control](https://img.shields.io/badge/Control-Feedforward_(flatness)-brightgreen)
 

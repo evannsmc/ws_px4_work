@@ -92,5 +92,12 @@ Two tasks: (A) extend README treatment to ALL remaining packages; (B) rename `fi
 ### IMPORTANT git note
 - `ff_f8_px4` and `offboard_cpp` are NOT submodules — plain dirs in the PARENT repo. `git -C ff_f8_px4` resolves to the PARENT .git. Commit their changes in the parent.
 
+# Phase 3 (new requests)
+- Docker build verify: ran colcon inside prebuilt `px4_controllers_jazzy` image → 10 pkgs built clean incl quad_trajectories_cpp (C++) + all Python rename pkgs. nmpc_cpp failed (needs acados solver pre-gen via ensure_solver.py — pre-existing, not rename). nr_cpp/geometric_cpp aborted by cascade → re-verifying in src/ layout.
+- Dual ROS badge: replaced "ROS 2 Humble" → "Humble | Jazzy" in all 10 controller READMEs; committed+pushed in 9 submodules (+ NR auto-committed by hook, pushed) + ff_f8 (parent).
+- **Restructure into `src/`** (user request): `git mv` all 17 submodules + data_analysis/docker/ff_f8_px4/offboard_cpp/makefile → `src/`. Root keeps README.md, plan.md, .claude, .vscode, .gitmodules. This matches the makefile (`WS_ROOT=..`), the acados solver path, the data_analysis log path, and the READMEs' documented layout.
+- Cleaned build/install/log (root-owned → removed via container).
+
 ## Notes
+- ROS Jazzy on this machine; badges now dual Humble|Jazzy per user.
 - (changes/eliminations recorded here as the plan evolves)
