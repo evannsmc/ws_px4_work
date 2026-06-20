@@ -118,3 +118,8 @@ Two tasks: (A) extend README treatment to ALL remaining packages; (B) rename `fi
 - Modernized src/PX4-ROS2-Docker README to house style (committed to its own repo).
 - nmpc README intro reframed (NMPC = baseline for the novel NR strategy); nmpc_cpp PhD + auto-gen wording fixed.
 - BLOCKED: flight campaign — no PX4-Autopilot on host (the Docker repo's own README confirms PX4-Autopilot is a separate host clone+build). src/PX4-ROS2-Docker is a clone, currently untracked in the parent (not added as a submodule).
+
+# Phase 6
+- Added `src/PX4-ROS2-Docker` as a submodule (canonical Docker source of truth); added generate_nmpc_solver to its Makefile.
+- Removed redundant `src/docker/` + `src/makefile` (identical to the submodule).
+- PX4-Autopilot v1.16.1 found at ~/PX4-Autopilot; SITL build kicked off for the flight campaign.

@@ -9,7 +9,7 @@ metadata:
 
 `ws_px4_work` is a parent repo (`git@github.com:evannsmc/ws_px4_work.git`) of 17 submodules, all personal `evannsmc` GitHub repos.
 
-**LAYOUT (changed 2026-06):** all packages now live under **`src/`** — i.e. `src/<pkg>`, `src/quad_trajectories`, `src/ff_f8_px4`, plus `src/docker`, `src/data_analysis`, `src/makefile`. Root keeps only `README.md`, `plan.md`, `.gitmodules`, `.gitignore`, `.claude/`, `.vscode/`. This is the canonical ROS2 colcon layout the makefile + acados solver path + READMEs all assume. (Earlier in the repo's history packages were at the repo root.)
+**LAYOUT (changed 2026-06):** all packages live under **`src/`** — `src/<pkg>`, plus plain dirs `src/ff_f8_px4`, `src/offboard_cpp`, `src/data_analysis`. The Docker infra is now the **`src/PX4-ROS2-Docker` submodule** (canonical source of truth; the old redundant `src/docker/` + `src/makefile` were removed). Root keeps only `README.md`, `plan.md`, `.gitmodules`, `.gitignore`, `.claude/`, `.vscode/`.
 
 Workflow when editing a submodule's tracked files (paths are now `src/<sub>`):
 
@@ -23,7 +23,7 @@ The user works **direct-to-main** on these personal repos (no PR flow) and autho
 
 Repo-name vs package-name quirk: `ROS2Logger` (GitHub repo) installs the package `ros2_logger`; its C++ counterpart repo is `ROS2Logger_cpp`. See [[readme-style-system]].
 
-**GOTCHA — not every package dir is a submodule.** `src/ff_f8_px4`, `src/offboard_cpp`, `src/docker`, and `src/data_analysis` are plain dirs tracked directly in the PARENT repo (absent from `.gitmodules`). So `git -C src/ff_f8_px4 add -u && git -C src/ff_f8_px4 commit` resolves to the PARENT `.git` and will sweep parent changes (pointer bumps, plan.md) into one mislabeled commit. Commit these dirs' changes directly in the parent. Verify membership with `.gitmodules` before using `git -C <dir>`.
+**GOTCHA — not every package dir is a submodule.** `src/ff_f8_px4`, `src/offboard_cpp`, and `src/data_analysis` are plain dirs tracked directly in the PARENT repo (absent from `.gitmodules`). So `git -C src/ff_f8_px4 add -u && git -C src/ff_f8_px4 commit` resolves to the PARENT `.git` and will sweep parent changes into one mislabeled commit. Commit these dirs' changes directly in the parent. Verify membership with `.gitmodules` before using `git -C <dir>`. (Docker infra is the `src/PX4-ROS2-Docker` submodule now.)
 
 **GOTCHA — the parent can pin submodules BEHIND their `origin/main`.** Audited (2026-06): `quad_trajectories_cpp` (+6), `newton_raphson_px4_cpp` (+5), `quad_platforms_cpp` (+2) were pinned behind, and the newer commits carried behavioral changes (gravity 9.8, trajectory reshaping, battery-logic removal) + an upstream `f8_contraction`→`fig8_contraction` rename. Before any cross-cutting edit, run a freshness audit (`HEAD..origin/main` per submodule) and ASK before pulling — pulling behavioral deltas can invalidate the user's pinned/reproducible setup.
 
