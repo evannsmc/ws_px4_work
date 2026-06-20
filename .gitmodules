@@ -49,3 +49,6 @@
 [submodule "nmpc_acados_px4_cpp"]
 	path = src/nmpc_acados_px4_cpp
 	url = git@github.com:evannsmc/nmpc_acados_px4_cpp.git
+[submodule "src/PX4-ROS2-Docker"]
+	path = src/PX4-ROS2-Docker
+	url = git@github.com:evannsmc/PX4-ROS2-Docker.git
