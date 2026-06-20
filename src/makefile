@@ -4,7 +4,7 @@
 #
 # HOW THE DOCKER IMAGE IS BUILT
 # ──────────────────────────────
-# The image (px4_controllers_jazzy) is built from src/docker/Dockerfile with
+# The image (px4_ros2_jazzy) is built from src/docker/Dockerfile with
 # the workspace root (ws_px4_work/) as the build context.  It contains:
 #
 #   • ROS 2 Jazzy          — from osrf/ros:jazzy-desktop-full base image
@@ -39,8 +39,8 @@
 #   make build_ros      # build all packages in the workspace
 # =============================================================================
 
-IMAGE_NAME     = px4_controllers_jazzy
-CONTAINER_NAME = px4_controllers
+IMAGE_NAME     = px4_ros2_jazzy
+CONTAINER_NAME = px4_ros2
 # src/ is CWD; ws_px4_work/ is one level up
 WS_ROOT        := $(abspath ..)
 

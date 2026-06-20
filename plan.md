@@ -109,3 +109,12 @@ Two tasks: (A) extend README treatment to ALL remaining packages; (B) rename `fi
 ## Notes
 - ROS Jazzy on this machine; badges now dual Humble|Jazzy per user.
 - (changes/eliminations recorded here as the plan evolves)
+
+# Phase 5
+- C++ NR: removed `--nr-profile` selectability to match single-config Python NR (alpha[50,60,60,60], lookahead 1.2s, dt 0.05, 1 iter, ZOH, CBF). Build-verified (COLCON EXIT=0).
+- Removed "Feedforward for fig8_contraction" sections from controller READMEs (kept in trajectory repos, per user).
+- Docker badge added to all 10 controller banners.
+- Reconciled image name to canonical **px4_ros2_jazzy** (per the added src/PX4-ROS2-Docker repo Makefile); re-tagged the local image; reverted src/makefile + memory.
+- Modernized src/PX4-ROS2-Docker README to house style (committed to its own repo).
+- nmpc README intro reframed (NMPC = baseline for the novel NR strategy); nmpc_cpp PhD + auto-gen wording fixed.
+- BLOCKED: flight campaign — no PX4-Autopilot on host (the Docker repo's own README confirms PX4-Autopilot is a separate host clone+build). src/PX4-ROS2-Docker is a clone, currently untracked in the parent (not added as a submodule).
